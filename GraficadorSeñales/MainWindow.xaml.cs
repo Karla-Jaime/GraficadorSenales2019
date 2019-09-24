@@ -22,9 +22,7 @@ namespace GraficadorSeñales
     {
         public MainWindow()
         {
-            InitializeComponent();
-
-            
+            InitializeComponent();          
         }
 
         private void BtnGraficar_Click(object sender, RoutedEventArgs e)
@@ -110,15 +108,23 @@ namespace GraficadorSeñales
                         Señal.escalarAmplitud(señal,
                         factorEscala);
                     break;
+                case 1:
+                    double factorDesplazamiento =
+                        double.Parse(((DesplazamientoAmplitud)(panelConfiguracionOperacion.Children[0]))
+                        .txtFactorDesplazamiento.Text);
+                    señalResultante =  Señal.desAmplitud(señal,factorDesplazamiento);
+                    break;
                 default:
                     señalResultante = null;
                     break;
             }
-            double amplitudMaxima = 
-                señal.AmplitudMaxima;
-            double amplitudMaximaResultado =
-                señalResultante.AmplitudMaxima;
 
+
+            //Operador ternario
+            //Evalua condicion. Si si y Si no
+            double amplitudMaxima =
+                (señal.AmplitudMaxima >= señalResultante.AmplitudMaxima) ?
+                señal.AmplitudMaxima : señalResultante.AmplitudMaxima;
 
             plnGrafica.Points.Clear();
             plnGraficaResultante.Points.Clear();
@@ -131,12 +137,14 @@ namespace GraficadorSeñales
                     muestra.Y, tiempoInicial, amplitudMaxima)
                     );
             }
+
             foreach(Muestra muestra in señalResultante.Muestras)
             {
                 plnGraficaResultante.Points.Add(
                     adaptarCoordenadas(muestra.X,
-                    muestra.Y,tiempoInicial,amplitudMaximaResultado)
+                    muestra.Y,tiempoInicial,amplitudMaxima)
                     );
+
             }
 
 
@@ -144,12 +152,13 @@ namespace GraficadorSeñales
                 amplitudMaxima.ToString("F");
             lblLimiteInferior.Text =
                 "-" + amplitudMaxima.ToString("F");
+                        
+            lblLimiteSuperiorResultante.Text =  
+                amplitudMaxima.ToString("F");
+            lblLimiteInferiorResultante.Text = "-" +
+                amplitudMaxima.ToString("F");
 
-            lblLimiteInferiorResultante.Text =
-                amplitudMaximaResultado.ToString("F");
-            lblLimiteSuperiorResultante.Text =  "-" +
-                amplitudMaximaResultado.ToString("F");
-
+            
             //Original
             plnEjeX.Points.Clear();
             plnEjeX.Points.Add(
@@ -162,31 +171,32 @@ namespace GraficadorSeñales
                 );
             //Resultado
             plnEjeXResultante.Points.Clear();
-            plnEjeXResultante.Points.Add(
+            plnEjeXResultante.Points.Add((
                 adaptarCoordenadas(tiempoInicial, 0.0,
-                tiempoInicial, amplitudMaximaResultado));
+                tiempoInicial, amplitudMaxima)));
             plnEjeXResultante.Points.Add(
                 adaptarCoordenadas(tiempoFinal, 0.0,
-                tiempoInicial, amplitudMaximaResultado));
-
-
+                tiempoInicial, amplitudMaxima));
+            //ver el cambio de como afecto la escala de la grafica
+            
             //Original
             plnEjeY.Points.Clear();
             plnEjeY.Points.Add(
                 adaptarCoordenadas(0.0, amplitudMaxima,
                 tiempoInicial,amplitudMaxima));
             plnEjeY.Points.Add(
-                adaptarCoordenadas(0.0, -amplitudMaxima,
+                adaptarCoordenadas(0.0, amplitudMaxima * -1,
                 tiempoInicial, amplitudMaxima)) ;
+
             //Resultado
             plnEjeYResultante.Points.Clear();
             plnEjeYResultante.Points.Add(
-                adaptarCoordenadas(0.0,amplitudMaximaResultado,
-                tiempoInicial, amplitudMaximaResultado)
+                adaptarCoordenadas(0.0,amplitudMaxima,
+                tiempoInicial, amplitudMaxima)
                 );
             plnEjeYResultante.Points.Add(
-                adaptarCoordenadas(0.0, -amplitudMaximaResultado,
-                tiempoInicial, amplitudMaximaResultado)
+                adaptarCoordenadas(0.0, amplitudMaxima * -1,
+                tiempoInicial, amplitudMaxima)
                 );
 
 
@@ -233,6 +243,9 @@ namespace GraficadorSeñales
                         Children.Add(
                             new OperacionEscalaAmplitud()
                         );
+                    break;
+                case 1: //Desplazamiento de Amplitud
+                    panelConfiguracionOperacion.Children.Add(new DesplazamientoAmplitud());
                     break;
                 default:
                     break;
