@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+
 namespace GraficadorSeñales
 {
     /// <summary>
@@ -114,6 +115,15 @@ namespace GraficadorSeñales
                         double.Parse(((DesplazamientoAmplitud)(panelConfiguracionOperacion.Children[0]))
                         .txtFactorDesplazamiento.Text);
                     señalResultante =  Señal.desAmplitud(señal,factorDesplazamiento);
+                    break;
+                case 2:
+                    señalResultante = null;
+                    break;
+                case 3:
+                    double factorExponencial =
+                       double.Parse(((OperacionEscalaExponencial)(panelConfiguracionOperacion.Children[0]))
+                       .txtFactorExponente.Text);
+                    señalResultante = Señal.escalaExponencial(señal, factorExponencial);                    
                     break;
                 default:
                     señalResultante = null;
@@ -253,6 +263,9 @@ namespace GraficadorSeñales
                 case 2:
                     mostrarSegundaSeñal(true);
                     //panelConfiguracionOperacion.Children.Add((new));
+                    break;
+                case 3:
+                    panelConfiguracionOperacion.Children.Add(new OperacionEscalaExponencial());
                     break;
                 default:
                     break;
