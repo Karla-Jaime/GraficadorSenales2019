@@ -92,7 +92,31 @@ namespace GraficadorSeñales
                 indice++;
             }
             return resultado;
-        }        
+        }
+
+        public static Señal adicionarSeñales(Señal señal1, Señal señal2)
+        {
+            //
+            SeñalResultante resultado = new SeñalResultante();
+            resultado.TiempoInicial = señal1.TiempoInicial;
+            resultado.TiempoFinal = señal1.TiempoInicial;
+            resultado.FrecuenciaMuestreo = señal1.FrecuenciaMuestreo;
+
+            int indice = 0;
+            foreach (var muestra in señal1.Muestras)
+            {//
+                double nuevoValor = muestra.Y + señal2.Muestras[indice].Y;
+
+                resultado.Muestras.Add(new Muestra(muestra.X, nuevoValor));
+                if (Math.Abs(nuevoValor) > resultado.AmplitudMaxima)
+                {
+                    resultado.AmplitudMaxima = Math.Abs(nuevoValor);
+                }
+                indice++;
+            }
+            return resultado;
+        }
+
         public static Señal desAmplitud(Señal señalOriginal, double factorDesplazamiento)
         {
             SeñalResultante resultado = new SeñalResultante();

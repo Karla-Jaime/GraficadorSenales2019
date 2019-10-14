@@ -101,7 +101,7 @@ namespace GraficadorSeñales
             }
                         
             //Construir segunda señal si es necesario
-            if (cbOperacion.SelectedIndex == 2)
+            if (cbOperacion.SelectedIndex == 2 | cbOperacion.SelectedIndex == 4)
             {
                 switch (cbTipoSeñal_2.SelectedIndex)
                 {
@@ -182,6 +182,9 @@ namespace GraficadorSeñales
                        double.Parse(((OperacionEscalaExponencial)(panelConfiguracionOperacion.Children[0]))
                        .txtFactorExponente.Text);
                     señalResultante = Señal.escalaExponencial(señal, factorExponencial);                    
+                    break;
+                case 4:
+                    señalResultante = Señal.adicionarSeñales(señal, segundaSeñal);
                     break;
                 default:
                     señalResultante = null;
@@ -341,6 +344,9 @@ namespace GraficadorSeñales
                     break;
                 case 3:
                     panelConfiguracionOperacion.Children.Add(new OperacionEscalaExponencial());
+                    break;
+                case 4:
+                    mostrarSegundaSeñal(true);
                     break;
                 default:
                     break;
