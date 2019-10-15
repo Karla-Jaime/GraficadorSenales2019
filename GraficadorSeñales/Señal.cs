@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Numerics;
 
 namespace GraficadorSeñales
 {
@@ -55,13 +56,11 @@ namespace GraficadorSeñales
                 señalOriginal.FrecuenciaMuestreo;
 
             foreach(var muestra in señalOriginal.Muestras)
-            {
+            { 
+                
                 double nuevoValor = muestra.Y * factorEscala;
                 resultado.Muestras.Add(
-                    new Muestra(
-                        muestra.X,
-                        nuevoValor)
-                    );
+                    new Muestra(muestra.X,  nuevoValor));
                 if (Math.Abs(nuevoValor) > resultado.AmplitudMaxima)
                 {
                     resultado.AmplitudMaxima =
@@ -71,6 +70,28 @@ namespace GraficadorSeñales
 
             return resultado;
         }
+        public static Señal transformadaFourier(Señal señal)
+        {
+            SeñalResultante resultado = new SeñalResultante();
+            resultado.TiempoInicial = señal.TiempoInicial;
+            resultado.TiempoFinal = señal.TiempoFinal;
+            resultado.FrecuenciaMuestreo = señal.FrecuenciaMuestreo;
+            //Integral 
+
+            for (int k = 0; k < señal.Muestras.Count; k++){
+                //Xk
+                Complex muestra = 0;// 0+ 01
+                for (int n = 0; n < señal.Muestras.Count; n++)
+                {//Sumatoria n= 0 + acumulados
+                    muestra += //Xn       * (e^-2Pi*i*k*n)/N
+                        señal.Muestras[n].Y * Complex.Exp((-2 * Math.PI * Complex.ImaginaryOne * k * n) / señal.Muestras.Count);
+                }
+                //Para graficar num complejos se camia el valor complejo a valor absoluto o magnitud
+                resultado.Muestras.Add(new Muestra( señal.Muestras[k].X, muestra.Magnitude));
+            }
+            return resultado;
+        }
+
         public static Señal multiplicarSeñales(Señal señal1, Señal señal2)
         {
             //

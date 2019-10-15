@@ -50,6 +50,7 @@
             <ComboBoxItem>Multiplicación de señales</ComboBoxItem>
             <ComboBoxItem>Escala Exponencial</ComboBoxItem>
             <ComboBoxItem>Adicion de señales</ComboBoxItem>
+            <ComboBoxItem>Fourier</ComboBoxItem>
 
         </ComboBox>
         <Grid x:Name="panelConfiguracionOperacion" HorizontalAlignment="Left" Height="181" Margin="333,10,0,0" VerticalAlignment="Top" Width="239"/>
