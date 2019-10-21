@@ -80,7 +80,7 @@ namespace GraficadorSeñales
 
             for (int k = 0; k < señal.Muestras.Count; k++){
                 //Xk
-                Complex muestra = 0;// 0+ 01
+                Complex muestra = 0;// 0 + 01
                 for (int n = 0; n < señal.Muestras.Count; n++)
                 {//Sumatoria n= 0 + acumulados
                     muestra += //Xn       * (e^-2Pi*i*k*n)/N
@@ -88,6 +88,13 @@ namespace GraficadorSeñales
                 }
                 //Para graficar num complejos se camia el valor complejo a valor absoluto o magnitud
                 resultado.Muestras.Add(new Muestra( señal.Muestras[k].X, muestra.Magnitude));
+                //Estoy bien mareada :( </3
+                if (Math.Abs(muestra.Magnitude) > señal.AmplitudMaxima)
+                {
+                    señal.AmplitudMaxima = Math.Abs(muestra.Magnitude);
+                }
+                // ( i * fm)/ N (num de muestras)indice de Fourier a Hz
+                             
             }
             return resultado;
         }

@@ -186,12 +186,18 @@ namespace GraficadorSeñales
                 case 4:
                     señalResultante = Señal.adicionarSeñales(señal, segundaSeñal);
                     break;
+                case 5://Transf. de Fourier
+                    señalResultante = Señal.transformadaFourier(señal);
+                    break;
                 default:
                     señalResultante = null;
                     break;
             }
-
-            
+            /////AQUI ME QUEDE
+            if(cbOperacion.SelectedIndex == 5)
+            {
+                lblHertz.Text =  ((frecuenciaMuestreo) / (señal.Muestras.Count)).ToString();
+            }
             //Operador ternario
             //Evalua condicion. Si si y Si no
             //Elige entre la primera y la resultante
@@ -205,6 +211,8 @@ namespace GraficadorSeñales
                     amplitudMaxima : segundaSeñal.AmplitudMaxima;
             }
 
+
+            
 
             plnGrafica.Points.Clear();
             plnGraficaResultante.Points.Clear();
@@ -348,6 +356,7 @@ namespace GraficadorSeñales
                 case 4:
                     mostrarSegundaSeñal(true);
                     break;
+                
                 default:
                     break;
             }
