@@ -194,10 +194,9 @@ namespace GraficadorSeñales
                     break;
             }
             /////AQUI ME QUEDE
-            if(cbOperacion.SelectedIndex == 5)
-            {
-                lblHertz.Text =  ((frecuenciaMuestreo) / (señal.Muestras.Count)).ToString();
-            }
+            
+
+           
             //Operador ternario
             //Evalua condicion. Si si y Si no
             //Elige entre la primera y la resultante
@@ -211,8 +210,8 @@ namespace GraficadorSeñales
                     amplitudMaxima : segundaSeñal.AmplitudMaxima;
             }
 
-
             
+
 
             plnGrafica.Points.Clear();
             plnGraficaResultante.Points.Clear();
@@ -244,6 +243,18 @@ namespace GraficadorSeñales
 
             }
 
+            if (cbOperacion.SelectedIndex == 5)
+            {
+                int indeceMaximo = 0;
+                for (int i = 0; i < (señalResultante.Muestras.Count / 2); i++)
+                {
+                    if(señalResultante.Muestras[i].Y > señalResultante.Muestras[indeceMaximo].Y)
+                    {
+                        indeceMaximo = i;
+                    }
+                }
+                lblHertz.Text = ((indeceMaximo * frecuenciaMuestreo) / (señal.Muestras.Count)).ToString( "N") + "Hz";
+            }
 
             lblLimiteSuperior.Text =
                 amplitudMaxima.ToString("F");

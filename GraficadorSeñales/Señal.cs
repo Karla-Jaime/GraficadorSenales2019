@@ -94,7 +94,8 @@ namespace GraficadorSeñales
                     señal.AmplitudMaxima = Math.Abs(muestra.Magnitude);
                 }
                 // ( i * fm)/ N (num de muestras)indice de Fourier a Hz
-                             
+                
+                          
             }
             return resultado;
         }
